@@ -58,7 +58,8 @@ function install_armitage_osx
 
 	    if [ ! -e /usr/local/bin/teamserver ]; then
 	    	print_status "CopyingTeamserver in /usr/local/bin/teamserver"
-	    	cp -f /usr/local/armitage/teamserver /usr/local/bin/teamserver
+	    	ln -s /usr/local/armitage/teamserver /usr/local/bin/teamserver
+	    	perl -pi -e 's/armitage.jar/\/usr\/local\/share\/armitage\/armitage.jar/g' /usr/local/share/armitage/teamserver
 	    else
 	    	print_good "Teamserver is already linked to /usr/local/bin/teamserver"
 	    fi
@@ -416,7 +417,8 @@ function install_armitage_linux
 
 	    if [ ! -e /usr/local/bin/teamserver ]; then
 	    	print_status "Creating link for Teamserver in /usr/local/bin/teamserver"
-	    	sudo cp -f /usr/local/share/armitage/teamserver /usr/local/bin/teamserver
+	    	sudo ln -s /usr/local/share/armitage/teamserver /usr/local/bin/teamserver
+	    	sudo perl -pi -e 's/armitage.jar/\/usr\/local\/share\/armitage\/armitage.jar/g' /usr/local/share/armitage/teamserver
 	    else
 	    	print_good "Teamserver is already linked to /usr/local/bin/teamserver"
 	    fi
