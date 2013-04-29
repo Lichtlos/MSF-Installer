@@ -296,6 +296,7 @@ function install_plugins
 function install_deps_deb
 {
 	print_status "Installing dependencies for Metasploit Framework"
+	sudo apt-get -y update
 	sudo apt-get -y install build-essential libreadline-dev  libssl-dev libpq5 libpq-dev libreadline5 libsqlite3-dev libpcap-dev openjdk-7-jre subversion git-core autoconf postgresql pgadmin3 curl zlib1g-dev libxml2-dev libxslt1-dev vncviewer libyaml-dev ruby1.9.3 #>> $LOGFILE
 	print_status "Installing base Ruby Gems"
 	sudo gem install wirble sqlite3 bundler #>> $LOGFILE
@@ -469,7 +470,7 @@ if [ $INSTALL -eq 0 ]; then
 			install_gcc_osx
 		fi
 
-	elif [[ "$KVER" =~ ubuntu ]]; then
+	elif [[ "$KVER" =~ buntu ]]; then
 		install_deps_deb
 		install_nmap_linux
 		configure_psql_deb
