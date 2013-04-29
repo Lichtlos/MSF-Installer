@@ -50,15 +50,15 @@ function install_armitage_osx
 
 	    # Check if links exists and if they do not create them
 	    if [ ! -e /usr/local/bin/armitage ]; then
-	    	print_status "Creating link for Armitage in /usr/local/bin/armitage"
-	    	ln -s /usr/local/armitage/armitage /usr/local/bin/armitage
+	    	print_status "Linking Armitage in /usr/local/bin/armitage"
+	    	echo java -jar /usr/local/share/armitage/armitage.jar \$\* > /usr/local/bin/armitage
 	    else
 	    	print_good "Armitage is already linked to /usr/local/bin/armitage"
 	    fi
 
 	    if [ ! -e /usr/local/bin/teamserver ]; then
-	    	print_status "Creating link for Teamserver in /usr/local/bin/teamserver"
-	    	ln -s /usr/local/armitage/teamserver /usr/local/bin/teamserver
+	    	print_status "CopyingTeamserver in /usr/local/bin/teamserver"
+	    	cp -f /usr/local/armitage/teamserver /usr/local/bin/teamserver
 	    else
 	    	print_good "Teamserver is already linked to /usr/local/bin/teamserver"
 	    fi
@@ -409,14 +409,14 @@ function install_armitage_linux
 	    # Check if links exists and if they do not create them
 	    if [ ! -e /usr/local/bin/armitage ]; then
 	    	print_status "Creating link for Armitage in /usr/local/bin/armitage"
-	    	sudo ln -s /usr/local/share/armitage/armitage /usr/local/bin/armitage
+	    	sudo echo java -jar /usr/local/share/armitage/armitage.jar \$\* > /usr/local/bin/armitage
 	    else
 	    	print_good "Armitage is already linked to /usr/local/bin/armitage"
 	    fi
 
 	    if [ ! -e /usr/local/bin/teamserver ]; then
 	    	print_status "Creating link for Teamserver in /usr/local/bin/teamserver"
-	    	sudo ln -s /usr/local/share/armitage/teamserver /usr/local/bin/teamserver
+	    	sudo cp -f /usr/local/share/armitage/teamserver /usr/local/bin/teamserver
 	    else
 	    	print_good "Teamserver is already linked to /usr/local/bin/teamserver"
 	    fi
@@ -428,7 +428,7 @@ function usage ()
 {
 	echo "Scritp for Installing Metasploit Framework"
 	echo "By Carlos_Perez[at]darkoperator.com"
-	echo "Ver 0.1.0"
+	echo "Ver 0.1.1"
 	echo ""
 	echo "-i                :Install Metasploit Framework."
 	echo "-p <password>     :password for MEtasploit databse msf user. If not provided a roandom one is generated for you."
