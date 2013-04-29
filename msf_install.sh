@@ -312,12 +312,12 @@ function install_nmap_linux
 	sudo svn co https://svn.nmap.org/nmap #>> $LOGFILE
 	cd nmap
 	print_status "Configuring Nmap"
-	./configure #>> $LOGFILE
+	sudo ./configure #>> $LOGFILE
 	print_status "Compiling the latest version of Nmap"
-	make #>> $LOGFILE
+	sudo make #>> $LOGFILE
 	print_status "Installing the latest version of Nmap"
 	sudo make install #>> $LOGFILE
-	make clean #>> $LOGFILE
+	sudo make clean #>> $LOGFILE
 }
 #######################################
 
@@ -362,10 +362,10 @@ function install_msf_linux
    pool: 75
    timeout: 5' > /usr/local/share/metasploit-framework/database.yml"
    	print_status "setting environment variable in system profile. Password will be requiered"
-   	sudo sh -c "echo export MSF_DATABASE_CONFIG=/usr/local/share/metasploit-framework/database.yml >> /etc/profile"
-   	echo "export MSF_DATABASE_CONFIG=/usr/local/share/metasploit-framework/database.yml" >> ~/.bash_profile
-   	source /etc/profile
-   	source ~/.bash_profile
+   	sudo sh -c "echo export MSF_DATABASE_CONFIG=/usr/local/share/metasploit-framework/database.yml >> /etc/environment"
+   	echo "export MSF_DATABASE_CONFIG=/usr/local/share/metasploit-framework/database.yml" >> ~/.bashrc 
+   	PS1='$ '
+	source ~/.bashrc
    	print_status "Installing required ruby gems by Framework using bundler"
    	cd /usr/local/share/metasploit-framework
    	sudo bundle install #>> $LOGFILE
@@ -410,7 +410,8 @@ function install_armitage_linux
 	    # Check if links exists and if they do not create them
 	    if [ ! -e /usr/local/bin/armitage ]; then
 	    	print_status "Creating link for Armitage in /usr/local/bin/armitage"
-	    	sudo echo java -jar /usr/local/share/armitage/armitage.jar \$\* > /usr/local/bin/armitage
+	    	sudo sh -c "echo java -jar /usr/local/share/armitage/armitage.jar \$\* > /usr/local/share/armitage/armitage"
+	    	sudo ln -s /usr/local/share/armitage/armitage /usr/local/bin/armitage
 	    else
 	    	print_good "Armitage is already linked to /usr/local/bin/armitage"
 	    fi
@@ -430,7 +431,7 @@ function usage ()
 {
 	echo "Scritp for Installing Metasploit Framework"
 	echo "By Carlos_Perez[at]darkoperator.com"
-	echo "Ver 0.1.1"
+	echo "Ver 0.1.2"
 	echo ""
 	echo "-i                :Install Metasploit Framework."
 	echo "-p <password>     :password for MEtasploit databse msf user. If not provided a roandom one is generated for you."
@@ -471,6 +472,10 @@ if [ $INSTALL -eq 0 ]; then
 		if [ $IGCC -eq 0 ]; then
 			install_gcc_osx
 		fi
+		print_status "#################################################################"
+		print_status "### YOU NEED TO RELOAD YOUR PROFILE BEFORE USE OF METASPLOIT! ###"
+		print_status "### RUN source ~/.bash_profile                                ###"
+		print_status "#################################################################"
 
 	elif [[ "$KVER" =~ buntu ]]; then
 		install_deps_deb
@@ -479,13 +484,12 @@ if [ $INSTALL -eq 0 ]; then
 		install_msf_linux
 		install_plugins_linux
 		install_armitage_linux
+		print_status "#################################################################"
+		print_status "### YOU NEED TO RELOAD YOUR PROFILE BEFORE USE OF METASPLOIT! ###"
+		print_status "### RUN source ~/.bashrc                                      ###"
+		print_status "#################################################################"
 	else
 		print_error "The script does not support this platform at this moment."
 		exit 1
 	fi
-	print_status "#################################################################"
-	print_status "### YOU NEED TO RELOAD YOUR PROFILE BEFORE USE OF METASPLOIT! ###"
-	print_status "### RUN source ~/.bash_profile                                ###"
-	print_status "#################################################################"
-
 fi
